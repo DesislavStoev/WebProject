@@ -8,9 +8,18 @@ namespace WebProject.Controllers
 {
     public class DailyOffersController : Controller
     {
-        public IActionResult Index()
+        public IActionResult DailyOffers()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View();
+
+            }
+            else
+            {
+                return View();
+            }
         }
+
     }
 }
