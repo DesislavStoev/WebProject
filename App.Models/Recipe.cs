@@ -13,13 +13,19 @@ namespace App.Models
 
         public virtual List<Ingredient> Ingredients { get; set; }
 
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
 
-        public Directions Directions { get; set; }
+        public virtual Category Category { get; set; }
+
+        public int DirectionsId { get; set; }
+
+        public virtual Directions Directions { get; set; }
 
         public string Author { get; set; }
 
-        public Nutrition Nutrition { get; set; }
+        public int NutritionId { get; set; }
+
+        public virtual Nutrition Nutrition { get; set; }
 
 
     }

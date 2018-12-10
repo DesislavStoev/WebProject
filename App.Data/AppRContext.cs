@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using App.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Web.Areas.Identity.Data
@@ -9,6 +10,16 @@ namespace App.Web.Areas.Identity.Data
             : base(options)
         {
         }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Directions> Directions { get; set; }
+
+        public DbSet<Ingredient> Ingredients { get; set; }
+
+        public DbSet<Nutrition> Nutritions { get; set; }
+
+        public DbSet<Recipe> Recipes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
