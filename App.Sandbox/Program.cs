@@ -7,6 +7,8 @@ using App.Web.Areas.Identity.Data;
 using System.Linq;
 using HtmlAgilityPack;
 using System.Text;
+using App.Models;
+using System.Collections.Generic;
 
 namespace App.Sandbox
 {
@@ -56,15 +58,44 @@ namespace App.Sandbox
 
                     var content = recipeDoc.DocumentNode.SelectSingleNode(@".//p[@class='recipe_step']").InnerText.Trim();
                     var ingredients = recipeDoc.DocumentNode.SelectNodes(@".//span[@typeof='v:RecipeIngredient']");
+                    var ingredietList = new List<Ingredient>();
                     foreach (var ingredient in ingredients)
                     {
                         var amount = ingredient.SelectSingleNode(@".//span[@property='v:amount']").InnerText.Trim();
                         var name = ingredient.SelectSingleNode(@".//a[@property='v:name']").InnerText.Trim();
+                        var i = new Ingredient
+                        {
+                            Name = name,
+                            Quantity = amount
+                        };
+                        ingredietList.Add(i);
                     }
 
-                    var readyTime = recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:totalTime']").InnerText.Trim();   
+                    var cookTime = recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:totalTime']").InnerText.Trim();
 
-                }
+                    var db = serviceProvider.GetService<AppRContext>();
+                    var r = new Recipe
+                    {
+                        Category = new Category
+                        {
+                            Name = categoryName
+                        },
+                        Name = recipeName,
+                        Directions = new Directions
+                        {
+                            CookTime = cookTime,
+                            Method = content,
+                            Serves = 4,
+                        },
+                        Author = "Uncknown",
+                        MenuType = Models.Enums.MenuType.Other,
+                        PhotoUrl = recipePicUrl,
+                        Ingredients = ingredietList,
+                        Nutrition = new Nutrition()
+                    };
+                    db.Recipes.Add(r);
+                    db.SaveChanges();
+                };
 
             }
 

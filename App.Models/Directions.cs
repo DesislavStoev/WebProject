@@ -9,9 +9,9 @@ namespace App.Models
 
         public CookSkill MyProperty { get; set; }
 
-        public DateTime PrepTime { get; set; }
+        public string PrepTime { get; set; }
 
-        public DateTime CookTime { get; set; }
+        public string CookTime { get; set; }
 
         public string Method { get; set; }
     }
