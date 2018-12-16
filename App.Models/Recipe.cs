@@ -27,6 +27,6 @@ namespace App.Models
 
         public virtual Nutrition Nutrition { get; set; }
 
-
+        public string PhotoUrl { get; set; }
     }
 }
