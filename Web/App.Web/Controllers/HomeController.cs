@@ -5,13 +5,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using App.Web.Models;
+using App.Data;
+using App.Models;
 
 namespace App.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IRepository<Recipe> _recipeRepository;
+
+        public HomeController(IRepository<Recipe> recipeRepository)
+        {
+            _recipeRepository = recipeRepository;
+        }
         public IActionResult Index()
         {
+           ViewData["Message"] ="Count: " + _recipeRepository.All().Count();
             return View();
         }
 
