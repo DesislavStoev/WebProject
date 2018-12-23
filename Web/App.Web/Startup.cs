@@ -6,9 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using App.Web.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using App.Data;
-using App.Web.Services;
+using App.Services.DataServices;
 
 namespace App.Web
 {
@@ -48,7 +47,7 @@ namespace App.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
-            services.AddScoped<IAppService, RecipeService>();
+            services.AddScoped<IRecipeService, RecipeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

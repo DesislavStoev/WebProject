@@ -1,12 +1,13 @@
-﻿using App.Data;
-using App.Models;
+﻿using App.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace App.Web.Services
+namespace App.Services.DataService
 {
-    public class RecipeService :IAppService
+    public class RecipeService : IRecipeService
     {
         private readonly IRepository<Recipe> _repository;
 

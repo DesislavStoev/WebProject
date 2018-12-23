@@ -1,4 +1,4 @@
-﻿namespace App.Web.Models.Home
+﻿namespace App.Services.Models.Home
 {
     public class IndexRecipeViewModel
     {

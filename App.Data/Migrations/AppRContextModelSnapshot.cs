@@ -82,21 +82,23 @@ namespace App.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Carbs");
+                    b.Property<decimal>("Carbs");
 
-                    b.Property<int>("Fat");
+                    b.Property<decimal>("Fat");
 
-                    b.Property<int>("Fibre");
+                    b.Property<decimal>("Fibre");
 
-                    b.Property<int>("Kcal");
+                    b.Property<decimal>("Kcal");
 
-                    b.Property<int>("Protein");
+                    b.Property<decimal>("Protein");
 
-                    b.Property<int>("Salt");
+                    b.Property<decimal>("Salt");
 
-                    b.Property<int>("Saturates");
+                    b.Property<decimal>("Saturates");
 
-                    b.Property<int>("Sugars");
+                    b.Property<string>("ServiceSize");
+
+                    b.Property<decimal>("Sugars");
 
                     b.HasKey("Id");
 
@@ -111,6 +113,8 @@ namespace App.Data.Migrations
 
                     b.Property<string>("Author");
 
+                    b.Property<string>("BigPictureUrl");
+
                     b.Property<int>("CategoryId");
 
                     b.Property<int>("DirectionsId");
@@ -121,7 +125,7 @@ namespace App.Data.Migrations
 
                     b.Property<int>("NutritionId");
 
-                    b.Property<string>("PhotoUrl");
+                    b.Property<string>("SmallPictureUrl");
 
                     b.HasKey("Id");
 

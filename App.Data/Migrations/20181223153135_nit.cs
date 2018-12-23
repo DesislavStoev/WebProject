@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace App.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class nit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,58 @@ namespace App.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Info = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Directions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Serves = table.Column<int>(nullable: false),
+                    MyProperty = table.Column<int>(nullable: false),
+                    PrepTime = table.Column<string>(nullable: true),
+                    CookTime = table.Column<string>(nullable: true),
+                    Method = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Directions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Nutritions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ServiceSize = table.Column<string>(nullable: true),
+                    Kcal = table.Column<decimal>(nullable: false),
+                    Fat = table.Column<decimal>(nullable: false),
+                    Saturates = table.Column<decimal>(nullable: false),
+                    Carbs = table.Column<decimal>(nullable: false),
+                    Sugars = table.Column<decimal>(nullable: false),
+                    Fibre = table.Column<decimal>(nullable: false),
+                    Protein = table.Column<decimal>(nullable: false),
+                    Salt = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nutritions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,6 +205,66 @@ namespace App.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    MenuType = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
+                    DirectionsId = table.Column<int>(nullable: false),
+                    Author = table.Column<string>(nullable: true),
+                    NutritionId = table.Column<int>(nullable: false),
+                    SmallPictureUrl = table.Column<string>(nullable: true),
+                    BigPictureUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Directions_DirectionsId",
+                        column: x => x.DirectionsId,
+                        principalTable: "Directions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Nutritions_NutritionId",
+                        column: x => x.NutritionId,
+                        principalTable: "Nutritions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Quantity = table.Column<string>(nullable: true),
+                    Comment = table.Column<string>(nullable: true),
+                    RecipeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +303,26 @@ namespace App.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_RecipeId",
+                table: "Ingredients",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_CategoryId",
+                table: "Recipes",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_DirectionsId",
+                table: "Recipes",
+                column: "DirectionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_NutritionId",
+                table: "Recipes",
+                column: "NutritionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,10 +343,25 @@ namespace App.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Directions");
+
+            migrationBuilder.DropTable(
+                name: "Nutritions");
         }
     }
 }

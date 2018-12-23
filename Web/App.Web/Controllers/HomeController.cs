@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using App.Web.Models;
-using App.Data;
-using App.Models;
-using App.Web.Models.Home;
-using App.Web.Services;
+using App.Services.DataServices;
+using App.Services.Models.Home;
 
 namespace App.Web.Controllers
 {
@@ -22,7 +17,7 @@ namespace App.Web.Controllers
         }
         public IActionResult Index()
         {
-            var recipes = recipeService.TakeTenRandomRecipes().Select(x => new IndexRecipeViewModel { Name = x.Name, Url = x.SmallPictureUrl });
+            var recipes = recipeService.GetRandomRecipes(12);
             IndexViewModel indexViewModel = new IndexViewModel { Recipes = recipes };
             return View(indexViewModel);
         }

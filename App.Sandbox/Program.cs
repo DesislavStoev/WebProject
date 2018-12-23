@@ -16,7 +16,7 @@ namespace App.Sandbox
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Start seeding ...");
 
             var serviceCollection = new ServiceCollection();
 
@@ -45,62 +45,104 @@ namespace App.Sandbox
             {
                 var categoryName = category.InnerText.Trim();
                 var url = category.SelectSingleNode(".//a").Attributes["href"].Value;
+                var db = serviceProvider.GetService<AppRContext>();
 
-                var doc1 = web.Load(url);
-                var recipesUrl = doc1.DocumentNode.SelectNodes(@".//table[@class='rec search_results']//a");
-
-                foreach (var recipeUrl in recipesUrl)
+                try
                 {
+                    var doc1 = web.Load(url);
+                    var recipesUrl = doc1.DocumentNode.SelectNodes(@".//td[@class='td1']//a"); 
 
-                    var recipeName = recipeUrl.InnerText.Trim();
-                    var recipeDoc = web.Load(recipeUrl.Attributes["href"].Value);
-                    var recipePicUrl = recipeDoc.DocumentNode.SelectSingleNode(".//div[@id='r1']//p//img").Attributes["src"].Value;
-
-                    var content = recipeDoc.DocumentNode.SelectSingleNode(@".//p[@class='recipe_step']").InnerText.Trim();
-                    var ingredients = recipeDoc.DocumentNode.SelectNodes(@".//span[@typeof='v:RecipeIngredient']");
-                    var ingredietList = new List<Ingredient>();
-                    foreach (var ingredient in ingredients)
+                    for (int i = 0; i < 11; i++)
                     {
-                        var amount = ingredient.SelectSingleNode(@".//span[@property='v:amount']").InnerText.Trim();
-                        var name = ingredient.SelectSingleNode(@".//a[@property='v:name']").InnerText.Trim();
-                        var i = new Ingredient
+                        var recipeUrl = recipesUrl[i];
+
+                        var recipeName = recipeUrl.InnerText.Trim();
+                        var recipeDoc = web.Load(recipeUrl.Attributes["href"].Value);
+                        var recipeBigPicUrl = recipeDoc.DocumentNode.SelectSingleNode(".//div[@id='r1']//p//img")?.Attributes["src"]?.Value;
+                        if (string.IsNullOrEmpty(recipeBigPicUrl))
                         {
-                            Name = name,
-                            Quantity = amount
+                            continue;
+                        }
+                        var recipeSmallPicUrl = recipeBigPicUrl.Replace("size_5", "size_2");
+                        var content = recipeDoc.DocumentNode.SelectSingleNode(@".//p[@class='recipe_step']").InnerText.Trim();
+                        var ingredients = recipeDoc.DocumentNode.SelectNodes(@".//span[@typeof='v:RecipeIngredient']");
+                        var ingredietList = new List<Ingredient>();
+                        foreach (var ingredient in ingredients)
+                        {
+                            var amount = ingredient.SelectSingleNode(@".//span[@property='v:amount']").InnerText.Trim();
+                            var name = ingredient.SelectSingleNode(@".//a[@property='v:name']").InnerText.Trim();
+                            var ingrDb = db.Ingredients.Where(x => x.Name == name).FirstOrDefault();
+                            if (ingrDb == null)
+                            {
+                                ingrDb = new Ingredient
+                                {
+                                    Name = name,
+                                };
+                            }
+                            ingrDb.Quantity = amount;
+                            ingredietList.Add(ingrDb);
+                        }
+
+                        var cookTime = recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:totalTime']").InnerText.Trim();
+                        var kcal = decimal.Parse(recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:calories']").InnerText.Trim());
+                        var fat = decimal.Parse(recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:fat']").InnerText.Trim());
+                        var saturates = decimal.Parse(recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:saturatedFat']").InnerText.Trim());
+                        var protein = decimal.Parse(recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:protein']").InnerText.Trim());
+                        var carbs = decimal.Parse(recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:carbohydrates']").InnerText.Trim());
+                        var serviceSize = recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:servingSize']").InnerText.Trim();
+
+                        var nutrition = new Nutrition
+                        {
+                            Kcal = kcal,
+                            Fat = fat,
+                            Saturates = saturates,
+                            Protein = protein,
+                            Carbs = carbs,
+                            ServiceSize = serviceSize
                         };
-                        ingredietList.Add(i);
+
+                        var categoryDb = db.Categories.Where(s => s.Name == categoryName).FirstOrDefault();
+                        if (categoryDb == null)
+                        {
+                            categoryDb = new Category
+                            {
+                                Name = categoryName
+                            };
+                            db.Categories.Add(categoryDb);
+                            db.SaveChanges();
+                        }
+
+
+                        var r = new Recipe
+                        {
+                            Category = categoryDb,
+                            Name = recipeName,
+                            Directions = new Directions
+                            {
+                                CookTime = cookTime,
+                                Method = content,
+                                Serves = 4,
+                            },
+                            Author = "Uncknown",
+                            MenuType = Models.Enums.MenuType.Other,
+                            BigPictureUrl = recipeBigPicUrl,
+                            SmallPictureUrl = recipeSmallPicUrl,
+                            Ingredients = ingredietList,
+                            Nutrition = nutrition
+                        };
+                        Console.WriteLine($"{r.Category.Name} => {r.Name}");
+                        db.Recipes.Add(r);
+
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    continue;
+                }
 
-                    var cookTime = recipeDoc.DocumentNode.SelectSingleNode(".//span[@property='v:totalTime']").InnerText.Trim();
-
-                    var db = serviceProvider.GetService<AppRContext>();
-                    var r = new Recipe
-                    {
-                        Category = new Category
-                        {
-                            Name = categoryName
-                        },
-                        Name = recipeName,
-                        Directions = new Directions
-                        {
-                            CookTime = cookTime,
-                            Method = content,
-                            Serves = 4,
-                        },
-                        Author = "Uncknown",
-                        MenuType = Models.Enums.MenuType.Other,
-                        PhotoUrl = recipePicUrl,
-                        Ingredients = ingredietList,
-                        Nutrition = new Nutrition()
-                    };
-                    db.Recipes.Add(r);
-                    db.SaveChanges();
-                };
-
+                db.SaveChanges();
             }
-
-            //var db = serviceProvider.GetService<AppRContext>();
-            //Console.WriteLine(db.Users.Count());
         }
 
         private static void ConfigureServices(ServiceCollection service)
