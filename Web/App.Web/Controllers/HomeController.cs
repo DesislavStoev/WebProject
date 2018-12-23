@@ -7,21 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using App.Web.Models;
 using App.Data;
 using App.Models;
+using App.Web.Models.Home;
+using App.Web.Services;
 
 namespace App.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRepository<Recipe> _recipeRepository;
+        private readonly RecipeService recipeService;
 
-        public HomeController(IRepository<Recipe> recipeRepository)
+        public HomeController(RecipeService recipeService)
         {
-            _recipeRepository = recipeRepository;
+            this.recipeService = recipeService;
         }
         public IActionResult Index()
         {
-           ViewData["Message"] ="Count: " + _recipeRepository.All().Count();
-            return View();
+            var recipes = recipeService.TakeTenRandomRecipes().Select(x => new IndexRecipeViewModel { Name = x.Name, Url = x.SmallPictureUrl });
+            IndexViewModel indexViewModel = new IndexViewModel { Recipes = recipes };
+            return View(indexViewModel);
         }
 
         public IActionResult About()
