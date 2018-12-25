@@ -7,7 +7,7 @@ using App.Services.Models.Home;
 
 namespace App.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IRecipeService recipeService;
 

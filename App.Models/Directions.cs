@@ -7,7 +7,7 @@ namespace App.Models
     {
         public int Serves { get; set; }
 
-        public CookSkill MyProperty { get; set; }
+        public CookSkill CookSkill { get; set; }
 
         public string PrepTime { get; set; }
 

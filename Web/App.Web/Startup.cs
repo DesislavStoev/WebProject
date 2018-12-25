@@ -48,6 +48,7 @@ namespace App.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<ICategorieService, CategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -28,4 +28,10 @@
     <ProjectReference Include="..\..\App.Services.DataServices\App.Services.DataServices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Recipe\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>
