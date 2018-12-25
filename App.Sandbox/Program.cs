@@ -50,12 +50,12 @@ namespace App.Sandbox
                 try
                 {
                     var doc1 = web.Load(url);
-                    var recipesUrl = doc1.DocumentNode.SelectNodes(@".//td[@class='td1']//a"); 
+                    var recipes = doc1.DocumentNode.SelectNodes(@".//table[@class='rec search_results']"); //(@".//td[@class='td1']//a");
 
                     for (int i = 0; i < 11; i++)
                     {
-                        var recipeUrl = recipesUrl[i];
-
+                        var recipeUrl = recipes[i].SelectSingleNode(@".//td[@class='td1']//a");
+                        var recipeSmallPicture = recipes[i].SelectSingleNode(@".//img[@class='pic']")?.Attributes["src"]?.Value;
                         var recipeName = recipeUrl.InnerText.Trim();
                         var recipeDoc = web.Load(recipeUrl.Attributes["href"].Value);
                         var recipeBigPicUrl = recipeDoc.DocumentNode.SelectSingleNode(".//div[@id='r1']//p//img")?.Attributes["src"]?.Value;
@@ -63,7 +63,7 @@ namespace App.Sandbox
                         {
                             continue;
                         }
-                        var recipeSmallPicUrl = recipeBigPicUrl.Replace("size_5", "size_2");
+                        var recipeSmallPicUrl = recipeSmallPicture;
                         var content = recipeDoc.DocumentNode.SelectSingleNode(@".//p[@class='recipe_step']").InnerText.Trim();
                         var ingredients = recipeDoc.DocumentNode.SelectNodes(@".//span[@typeof='v:RecipeIngredient']");
                         var ingredietList = new List<Ingredient>();

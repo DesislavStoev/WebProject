@@ -9,9 +9,9 @@ namespace App.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly RecipeService recipeService;
+        private readonly IRecipeService recipeService;
 
-        public HomeController(RecipeService recipeService)
+        public HomeController(IRecipeService recipeService)
         {
             this.recipeService = recipeService;
         }
