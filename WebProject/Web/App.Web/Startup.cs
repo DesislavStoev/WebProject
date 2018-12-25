@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using App.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using App.Web.Areas.Identity.Data;
+using App.Data;
+using App.Services.DataServices;
 
 namespace App.Web
 {
@@ -34,13 +30,25 @@ namespace App.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<AppRContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    this.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            services.AddDefaultIdentity<AppUser>(options =>
+            {
+                options.Password.RequiredLength = 3;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores<AppRContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped(typeof(IRepository<>), typeof(DbRepository<>));
+            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<ICategorieService, CategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +58,7 @@ namespace App.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
             }
             else
             {

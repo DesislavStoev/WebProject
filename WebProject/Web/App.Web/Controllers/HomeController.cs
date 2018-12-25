@@ -1,18 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using App.Web.Models;
+using App.Services.DataServices;
+using App.Services.Models.Home;
 
 namespace App.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        private readonly IRecipeService recipeService;
+
+        public HomeController(IRecipeService recipeService)
+        {
+            this.recipeService = recipeService;
+        }
         public IActionResult Index()
         {
-            return View();
+            var recipes = recipeService.GetRandomRecipes(12);
+            IndexViewModel indexViewModel = new IndexViewModel { Recipes = recipes };
+            return View(indexViewModel);
         }
 
         public IActionResult About()
