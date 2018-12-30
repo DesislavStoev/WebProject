@@ -23,5 +23,7 @@ namespace App.Models
         public decimal Protein { get; set; }
 
         public decimal Salt { get; set; }
+
+        public virtual Recipe Recipe { get; set; }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace App.Models
+﻿namespace App.Models
 {
     public class Ingredient : BaseModel<int>
     {
@@ -10,6 +6,6 @@ namespace App.Models
 
         public string Quantity { get; set; }
 
-        public string Comment { get; set; }
+        public virtual Recipe Recipe { get; set; }
     }
 }

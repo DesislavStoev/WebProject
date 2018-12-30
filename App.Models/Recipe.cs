@@ -11,7 +11,7 @@ namespace App.Models
 
         public MenuType MenuType { get; set; }
 
-        public virtual List<Ingredient> Ingredients { get; set; }
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
 
         public int CategoryId { get; set; }
 

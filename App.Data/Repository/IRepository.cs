@@ -9,7 +9,7 @@ namespace App.Data
     public interface IRepository<TEntity>
         where TEntity: class
     {
-        IQueryable<TEntity> All();
+        IEnumerable<TEntity> All();
 
         Task AddAsync(TEntity entity);
 
