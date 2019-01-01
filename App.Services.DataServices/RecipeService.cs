@@ -14,21 +14,12 @@ namespace App.Services.DataServices
     {
         private readonly IRepository<Recipe> _repositoryRecipe;
         private readonly IRepository<Category> _repositoryCategory;
-        private readonly IRepository<Directions> _repositoryDirections;
-        private readonly IRepository<Ingredient> _repositoryIngredient;
-        private readonly IRepository<Nutrition> _repositoryNutrition;
 
         public RecipeService(IRepository<Recipe> repositoryRecipe, 
-                             IRepository<Category> repositoryCategory, 
-                             IRepository<Directions> repositoryDirections, 
-                             IRepository<Ingredient> repositoryIngredient,
-                             IRepository<Nutrition> repositoryNutrition)
+                             IRepository<Category> repositoryCategory)
         {
             _repositoryRecipe = repositoryRecipe;
             _repositoryCategory = repositoryCategory;
-            _repositoryDirections = repositoryDirections;
-            _repositoryIngredient = repositoryIngredient;
-            _repositoryNutrition = repositoryNutrition;
         }
 
         public List<IndexRecipeViewModel> GetRandomRecipes(int count)
@@ -107,17 +98,13 @@ namespace App.Services.DataServices
         public DetailsRecipeViewModel GetRecipeById(int id)
         {
             var recipe = _repositoryRecipe.All().FirstOrDefault(r => r.Id == id);
-            var category = _repositoryCategory.All().FirstOrDefault(c => c.Id == recipe.CategoryId);
-            var directions = _repositoryDirections.All().FirstOrDefault(d => d.Id == recipe.DirectionsId);
-            var ingredients = _repositoryIngredient.All().Where(i => i.Recipe.Id == id);
-            var nutrition = _repositoryNutrition.All().Where(n => n.Recipe.Id == id);
-
+           
             DetailsRecipeViewModel details = new DetailsRecipeViewModel();
 
             if (recipe != null)
             {
                 details.Author = recipe.Author;
-                details.CategoryName = category.Name;
+                details.CategoryName = recipe.Category.Name;
                 details.Directions = recipe.Directions;
                 details.Ingredients = recipe.Ingredients;
                 details.MenuType = recipe.MenuType;

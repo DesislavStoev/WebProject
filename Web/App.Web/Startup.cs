@@ -31,8 +31,8 @@ namespace App.Web
             });
 
             services.AddDbContext<AppRContext>(options =>
-                options.UseSqlServer(
-                    this.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseLazyLoadingProxies()
+                           .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddDefaultIdentity<AppUser>(options =>
