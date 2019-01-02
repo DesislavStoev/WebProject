@@ -1,69 +1,81 @@
-﻿@model App.Services.Models.Recipe.CreateRecipeInputModel
+﻿@using App.Services.Models
+@model App.Services.Models.Recipe.CreateRecipeInputModel
+
 
 @{
     ViewData["Title"] = "Create";
+    var categories = ViewData["Categories"] as IEnumerable<SelectListItem>;
+    var menuTypes = ViewData["MenuTypes"] as IEnumerable<SelectListItem>;
+    var skills = ViewData["Skills"] as IEnumerable<SelectListItem>;
 }
 
-<h2>Create</h2>
+<h2>Създаване на рецепта</h2>
 
-<h4>CreateRecipeInputModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Име</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
+                <label asp-for="ImageUrl" class="control-label">Адрес на снимката</label>
+                <input asp-for="ImageUrl" class="form-control" type="url" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <input asp-for="CategoryId" class="form-control" />
+                <label asp-for="CategoryId" class="control-label">Категории</label>
+                <select asp-for="CategoryId" asp-items="categories" class="form-control"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
+                <label asp-for="Author" class="control-label">Автор</label>
                 <input asp-for="Author" class="form-control" />
                 <span asp-validation-for="Author" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Serves" class="control-label"></label>
+                <label asp-for="Serves" class="control-label">Порции</label>
                 <input asp-for="Serves" class="form-control" />
                 <span asp-validation-for="Serves" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CookSkill" class="control-label"></label>
-                <input asp-for="CookSkill" class="form-control" />
+                <label asp-for="CookSkill" class="control-label">Умения</label>
+                <select asp-for="CookSkill" asp-items="skills" class="form-control"></select>
                 <span asp-validation-for="CookSkill" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrepTime" class="control-label"></label>
+                <label asp-for="PrepTime" class="control-label">Време за подготовка</label>
                 <input asp-for="PrepTime" class="form-control" />
                 <span asp-validation-for="PrepTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CookTime" class="control-label"></label>
+                <label asp-for="CookTime" class="control-label">Време за готвене</label>
                 <input asp-for="CookTime" class="form-control" />
                 <span asp-validation-for="CookTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Method" class="control-label"></label>
+                <label asp-for="Method" class="control-label">Метод</label>
                 <textarea asp-for="Method" class="form-control" rows="6"></textarea>
                 <span asp-validation-for="Method" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MenuType" class="control-label"></label>
-                <input asp-for="MenuType" class="form-control" />
+                <div id="firstDiv">
+                    <label asp-for="Ingredient" class="control-label">Продукти</label>
+                    <input type="text" class="form-control" placeholder="Име" name="ingredientName" />
+                    <input type="text" class="form-control" placeholder="Количество" name="ingredientQuantity" />
+                    <input type="button" value="Добави още" onclick="DynamicAdd()" class="btn btn-default" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuType" class="control-label">Тип меню</label>
+                <select asp-for="MenuType" asp-items="menuTypes" class="form-control"></select>
                 <span asp-validation-for="MenuType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServiceSize" class="control-label"></label>
+                <label asp-for="ServiceSize" class="control-label">Тегло на порцията</label>
                 <input asp-for="ServiceSize" class="form-control" />
                 <span asp-validation-for="ServiceSize" class="text-danger"></span>
             </div>
@@ -108,14 +120,14 @@
                 <span asp-validation-for="Salt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Създай" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Обратно към Начална страница</a>
 </div>
 
 @section Scripts {

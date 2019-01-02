@@ -4,14 +4,16 @@ using App.Web.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace App.Data.Migrations
 {
     [DbContext(typeof(AppRContext))]
-    partial class AppRContextModelSnapshot : ModelSnapshot
+    [Migration("20181230212947_someModel")]
+    partial class someModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,8 +133,7 @@ namespace App.Data.Migrations
 
                     b.HasIndex("DirectionsId");
 
-                    b.HasIndex("NutritionId")
-                        .IsUnique();
+                    b.HasIndex("NutritionId");
 
                     b.ToTable("Recipes");
                 });
@@ -300,7 +301,7 @@ namespace App.Data.Migrations
 
             modelBuilder.Entity("App.Models.Ingredient", b =>
                 {
-                    b.HasOne("App.Models.Recipe", "Recipe")
+                    b.HasOne("App.Models.Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId");
                 });
@@ -318,8 +319,8 @@ namespace App.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("App.Models.Nutrition", "Nutrition")
-                        .WithOne("Recipe")
-                        .HasForeignKey("App.Models.Recipe", "NutritionId")
+                        .WithMany()
+                        .HasForeignKey("NutritionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

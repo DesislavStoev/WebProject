@@ -1,14 +1,39 @@
-﻿using System;
+﻿using App.Data;
+using App.Models;
+using App.Services.Models;
+using App.Services.Models.Category;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace App.Services.DataServices
 {
-    public class CategoryService : ICategorieService
+    public class CategoryService : ICategoryService
     {
-        public IEnumerable<CategoryIdAndViewModel> GetAllCategories()
+        private readonly IRepository<Category> _repository;
+
+        public CategoryService(IRepository<Category> repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
+        }
+
+
+        public IEnumerable<IdAndNameViewModel> GetAllCategories()
+        {
+            var categories = _repository.All().OrderBy(x => x.Name).Select(x => new IdAndNameViewModel { Id = x.Id, Name = x.Name}).ToList();
+
+            return categories;
+        }
+
+        public IEnumerable<CategoryViewModel> GetAllCategoryWithCount()
+        {
+            var categories = _repository.All().OrderBy(x => x.Name).Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name, Count = x.Recipes.Count() }).ToList();
+
+            return categories;
+        }
+
+        public bool IsCategoryIdValid(int categoryId)
+        {
+            return _repository.All().Any(x => x.Id == categoryId);
         }
     }
 }

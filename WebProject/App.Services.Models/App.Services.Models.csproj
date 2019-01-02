@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\App.Models\App.Models.csproj" />
+    <ProjectReference Include="..\App.Services.Mapping\App.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

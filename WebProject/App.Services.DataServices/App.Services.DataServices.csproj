@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\App.Data\App.Data.csproj" />
     <ProjectReference Include="..\App.Models\App.Models.csproj" />
+    <ProjectReference Include="..\App.Services.Mapping\App.Services.Mapping.csproj" />
     <ProjectReference Include="..\App.Services.Models\App.Services.Models.csproj" />
   </ItemGroup>
 

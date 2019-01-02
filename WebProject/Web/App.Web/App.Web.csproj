@@ -26,12 +26,7 @@
     <ProjectReference Include="..\..\App.Data\App.Data.csproj" />
     <ProjectReference Include="..\..\App.Models\App.Models.csproj" />
     <ProjectReference Include="..\..\App.Services.DataServices\App.Services.DataServices.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="Views\Recipe\Index.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
+    <ProjectReference Include="..\..\App.Services.Mapping\App.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
