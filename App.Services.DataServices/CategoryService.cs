@@ -1,6 +1,7 @@
 ﻿using App.Data;
 using App.Models;
 using App.Services.Models;
+using App.Services.Models.Category;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +20,13 @@ namespace App.Services.DataServices
         public IEnumerable<IdAndNameViewModel> GetAllCategories()
         {
             var categories = _repository.All().OrderBy(x => x.Name).Select(x => new IdAndNameViewModel { Id = x.Id, Name = x.Name}).ToList();
+
+            return categories;
+        }
+
+        public IEnumerable<CategoryViewModel> GetAllCategoryWithCount()
+        {
+            var categories = _repository.All().OrderBy(x => x.Name).Select(x => new CategoryViewModel { Id = x.Id, Name = x.Name, Count = x.Recipes.Count() }).ToList();
 
             return categories;
         }

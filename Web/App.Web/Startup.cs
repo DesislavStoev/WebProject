@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using App.Web.Areas.Identity.Data;
 using App.Data;
 using App.Services.DataServices;
+using App.Services.Mapping;
+using App.Services.Models.Home;
+using App.Services.Models.Recipe;
 
 namespace App.Web
 {
@@ -22,7 +25,12 @@ namespace App.Web
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        { 
+            AutoMapperConfig.RegisterMapping(
+                typeof(IndexViewModel).Assembly,
+                typeof(CreateRecipeInputModel).Assembly
+                );
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

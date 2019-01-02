@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Models\App.Models.csproj" />
+    <ProjectReference Include="..\App.Services.Mapping\App.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

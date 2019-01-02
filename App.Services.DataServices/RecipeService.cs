@@ -1,5 +1,6 @@
 ﻿using App.Data;
 using App.Models;
+using App.Services.Models;
 using App.Services.Models.Home;
 using App.Services.Models.Recipe;
 using Microsoft.AspNetCore.Http;
@@ -15,20 +16,20 @@ namespace App.Services.DataServices
         private readonly IRepository<Recipe> _repositoryRecipe;
         private readonly IRepository<Category> _repositoryCategory;
 
-        public RecipeService(IRepository<Recipe> repositoryRecipe, 
+        public RecipeService(IRepository<Recipe> repositoryRecipe,
                              IRepository<Category> repositoryCategory)
         {
             _repositoryRecipe = repositoryRecipe;
             _repositoryCategory = repositoryCategory;
         }
 
-        public List<IndexRecipeViewModel> GetRandomRecipes(int count)
+        public IEnumerable<IndexRecipeViewModel> GetRandomRecipes(int count)
         {
             var recipes = _repositoryRecipe
                 .All()
                 .OrderBy(x => Guid.NewGuid())
                 .Take(count)
-                .Select(x => new IndexRecipeViewModel { Name = x.Name, Url = x.SmallPictureUrl })
+                .Select(x => new IndexRecipeViewModel { Name = x.Name, Url = x.SmallPictureUrl, Id = x.Id })
                 .ToList();
 
             return recipes;
@@ -98,7 +99,7 @@ namespace App.Services.DataServices
         public DetailsRecipeViewModel GetRecipeById(int id)
         {
             var recipe = _repositoryRecipe.All().FirstOrDefault(r => r.Id == id);
-           
+
             DetailsRecipeViewModel details = new DetailsRecipeViewModel();
 
             if (recipe != null)
@@ -114,6 +115,17 @@ namespace App.Services.DataServices
             }
 
             return details;
+        }
+
+        public IEnumerable<IdAndNameViewModel> GetAllRecipiesByCategory(int categoryId)
+        {
+            var recipies = _repositoryRecipe
+                            .All()
+                            .Where(r => r.CategoryId == categoryId)
+                            .Select(x => new IdAndNameViewModel { Name = x.Name, Id = x.Id })
+                            .ToList();
+
+            return recipies;
         }
     }
 }

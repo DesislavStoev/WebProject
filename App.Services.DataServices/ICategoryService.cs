@@ -1,4 +1,5 @@
 ﻿using App.Services.Models;
+using App.Services.Models.Category;
 using System.Collections.Generic;
 
 namespace App.Services.DataServices
@@ -8,5 +9,7 @@ namespace App.Services.DataServices
         IEnumerable<IdAndNameViewModel> GetAllCategories();
 
         bool IsCategoryIdValid(int categoryId);
+
+        IEnumerable<CategoryViewModel> GetAllCategoryWithCount();
     }
 }

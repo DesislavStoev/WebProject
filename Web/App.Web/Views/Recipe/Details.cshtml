@@ -1,7 +1,7 @@
 ﻿@model App.Services.Models.Recipe.DetailsRecipeViewModel
 
 @{
-    ViewData["Title"] = "Deatails";
+    ViewData["Title"] = "Details";
 }
 
 <h2>Details</h2>
@@ -23,6 +23,12 @@
             @Html.DisplayFor(model => model.MenuType)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Author)
         </dt>
         <dd>
@@ -38,5 +44,5 @@
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Обратно към Начална страница</a>
 </div>
