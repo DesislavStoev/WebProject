@@ -1,47 +1,48 @@
 ﻿@model App.Services.Models.Recipe.DetailsRecipeViewModel
 
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h2>Details</h2>
-
-<div>
-    <h4>DetailsRecipeViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MenuType)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MenuType)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SmallPictureUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SmallPictureUrl)
-        </dd>
-    </dl>
+<div class="container-fluid" style="background-color:lavender;">
+    <div class="row">
+        <div class="col-sm-6 col-md-6">@Model.Name</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <img src="@Model.SmallPictureUrl" alt="Няма изображение" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            @Model.Directions.Method
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-md-4">
+            <!-- Ingredients-->
+            @foreach (var ingredient in Model.Ingredients)
+            {
+                <div class="col-sm-2 col-md-2">
+                    @ingredient.Name
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    @ingredient.Quantity
+                </div>
+            }
+        </div>
+        <div class="col-sm-2 col-md-2">
+            @Model.Directions.Serves
+        </div>
+        <div class="col-sm-2 col-md-2">
+            @Model.Directions.PrepTime
+        </div>
+        <div class="col-sm-2 col-md-2">
+            @Model.Directions.CookTime
+        </div>
+        <div class="col-sm-2 col-md-2">
+            @Model.Directions.CookSkill.ToString()
+        </div>
+    </div>
 </div>
+
+
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index" asp-controller="Home">Обратно към Начална страница</a>
