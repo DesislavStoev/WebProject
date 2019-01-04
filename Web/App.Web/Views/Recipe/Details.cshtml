@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-md-6 m-2 text-center">
-            <img src="@Model.SmallPictureUrl" alt="Няма изображение" class="shadow-lg rounded"/>
+            <img src="@Model.SmallPictureUrl" alt="Няма изображение" class="shadow-lg rounded" />
         </div>
     </div>
     <div class="row m-md-4">
@@ -48,9 +48,12 @@
         </div>
     </div>
 </div>
+<a asp-area="" asp-controller="Comment" asp-action="Create" asp-route-id="@Model.RecipeId">Напиши коментар</a>
+
+@*<partial name="CommentPartial" />*@
 
 
 <div>
-    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index" asp-controller="Home">Обратно към Начална страница</a>
 </div>
