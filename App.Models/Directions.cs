@@ -1,13 +1,10 @@
-﻿using App.Models.Enums;
-using System;
-
-namespace App.Models
+﻿namespace App.Models
 {
     public class Directions:BaseModel<int>
     {
         public int Serves { get; set; }
 
-        public CookSkill CookSkill { get; set; }
+        public int CookSkill { get; set; }  
 
         public string PrepTime { get; set; }
 

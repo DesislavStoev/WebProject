@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Data.Migrations
 {
     [DbContext(typeof(AppRContext))]
-    [Migration("20181225141001_init")]
-    partial class init
+    [Migration("20190105202032_second")]
+    partial class second
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,13 +27,30 @@ namespace App.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Info");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int?>("RecipeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("App.Models.Directions", b =>
@@ -42,11 +59,11 @@ namespace App.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CookSkill");
+
                     b.Property<string>("CookTime");
 
                     b.Property<string>("Method");
-
-                    b.Property<int>("MyProperty");
 
                     b.Property<string>("PrepTime");
 
@@ -62,8 +79,6 @@ namespace App.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comment");
 
                     b.Property<string>("Name");
 
@@ -121,8 +136,6 @@ namespace App.Data.Migrations
 
                     b.Property<int>("DirectionsId");
 
-                    b.Property<int>("MenuType");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("NutritionId");
@@ -135,7 +148,8 @@ namespace App.Data.Migrations
 
                     b.HasIndex("DirectionsId");
 
-                    b.HasIndex("NutritionId");
+                    b.HasIndex("NutritionId")
+                        .IsUnique();
 
                     b.ToTable("Recipes");
                 });
@@ -301,9 +315,16 @@ namespace App.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.HasOne("App.Models.Recipe", "Recipe")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecipeId");
+                });
+
             modelBuilder.Entity("App.Models.Ingredient", b =>
                 {
-                    b.HasOne("App.Models.Recipe")
+                    b.HasOne("App.Models.Recipe", "Recipe")
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId");
                 });
@@ -321,8 +342,8 @@ namespace App.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("App.Models.Nutrition", "Nutrition")
-                        .WithMany()
-                        .HasForeignKey("NutritionId")
+                        .WithOne("Recipe")
+                        .HasForeignKey("App.Models.Recipe", "NutritionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

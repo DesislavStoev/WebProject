@@ -5,8 +5,6 @@
 @{
     ViewData["Title"] = "Create";
     var categories = ViewData["Categories"] as IEnumerable<SelectListItem>;
-    var menuTypes = ViewData["MenuTypes"] as IEnumerable<SelectListItem>;
-    var skills = ViewData["Skills"] as IEnumerable<SelectListItem>;
 }
 
 <h2>Създаване на рецепта</h2>
@@ -43,7 +41,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CookSkill" class="control-label">Умения</label>
-                <select asp-for="CookSkill" asp-items="skills" class="form-control"></select>
+                <input asp-for="CookSkill" class="form-control"/>
                 <span asp-validation-for="CookSkill" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -69,11 +67,11 @@
                     <input type="button" value="Добави още" onclick="DynamicAdd()" class="btn btn-default" />
                 </div>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="MenuType" class="control-label">Тип меню</label>
                 <select asp-for="MenuType" asp-items="menuTypes" class="form-control"></select>
                 <span asp-validation-for="MenuType" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="ServiceSize" class="control-label">Тегло на порцията</label>
                 <input asp-for="ServiceSize" class="form-control" />

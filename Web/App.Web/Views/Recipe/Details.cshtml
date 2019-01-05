@@ -1,4 +1,10 @@
-﻿@model App.Services.Models.Recipe.DetailsRecipeViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using App.Web.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@model App.Services.Models.Recipe.DetailsRecipeViewModel
 
 <div class="container-fluid m-2" style="background-color:lavender;">
     <div class="row">
@@ -21,39 +27,127 @@
             @foreach (var ingredient in Model.Ingredients)
             {
                 <div class="row">
-                    <div class="col-md-8 border-success border-bottom">
+                    <div class="col-md-7 border-success border-bottom">
                         @ingredient.Name
                     </div>
-                    <div class="col-md-4 border-success border-bottom">
+                    <div class="col-md-5 border-success border-bottom">
                         @ingredient.Quantity
                     </div>
                 </div>
             }
         </div>
-        <div class="col-md-1 m-2">
-            <h6>Порции</h6>
-            @Model.Directions.Serves
+        <div class="col-md-3 border border-dark rounded m-2 shadow">
+            <!-- Nutrition-->
+            <h4><u>Факти</u></h4>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Калории
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Kcal кал.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Въглехидрати
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Carbs г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Мазнини
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Fat г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Мазнини(наситени)
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Saturates г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Фибри
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Fibre г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Белтъчини
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Protein г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Натриий
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Salt г.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 border-success border-bottom">
+                    Захари
+                </div>
+                <div class="col-md-5 border-success border-bottom">
+                    @Model.Nutrition.Sugars г.
+                </div>
+            </div>
+
         </div>
-        <div class="col-md-2 m-2">
-            <h6>Време за подготовка</h6>
-            @Model.Directions.PrepTime
-        </div>
-        <div class="col-md-2 m-2">
-            <h6>Време за готвене</h6>
-            @Model.Directions.CookTime
-        </div>
-        <div class="col-md-1 m-2">
-            <h6>Сложност</h6>
-            @Model.Directions.CookSkill.ToString()
+        <div class="col-md-4 m-2">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Порции</h6>
+                    @Model.Directions.Serves
+                </div>
+                <div class="col-md-6">
+                    <h6>Сложност (1-10)</h6>
+                    @Model.Directions.CookSkill.ToString()
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Време за подготовка</h6>
+                    @Model.Directions.PrepTime
+                </div>
+                <div class="col-md-6">
+                    <h6>Време за готвене</h6>
+                    @Model.Directions.CookTime
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<a asp-area="" asp-controller="Comment" asp-action="Create" asp-route-id="@Model.RecipeId">Напиши коментар</a>
 
-@*<partial name="CommentPartial" />*@
-
+<div class="container-fluid m-2" style="background-color:lavender;">
+    <h5>Коментари</h5>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="card pmd-card m-2">
+            <div class="card-header">
+                @UserManager.GetUserName(User)
+            </div>
+            <div class="card-body">
+                <p class="card-text">@comment.Content</p>
+                <p class="card-text"><small class="text-muted">@comment.Date</small></p>
+            </div>
+        </div>
+    }
+    <a asp-area="" asp-controller="Comment" asp-action="Create" asp-route-id="@Model.RecipeId"><button type="button" class="btn btn-secondary m-2"> Напиши коментар</button></a>
+</div>
 
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index" asp-controller="Home">Обратно към Начална страница</a>
 </div>

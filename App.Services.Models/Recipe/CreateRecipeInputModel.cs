@@ -1,6 +1,4 @@
-﻿using App.Models;
-using App.Models.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace App.Services.Models.Recipe
 {
@@ -21,16 +19,15 @@ namespace App.Services.Models.Recipe
         [Range(1, 10)]
         public int Serves { get; set; }
 
-        public CookSkill CookSkill { get; set; }
+        public int CookSkill { get; set; } = 1;
 
         public string PrepTime { get; set; }
 
+        [Range(1, 10)]
         public string CookTime { get; set; }
 
         [Required]
         public string Method { get; set; }
-
-        public MenuType MenuType { get; set; }
 
         [Range(1, 1000)]
         public string ServiceSize { get; set; }

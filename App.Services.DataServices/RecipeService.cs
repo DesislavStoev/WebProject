@@ -1,6 +1,7 @@
 ﻿using App.Data;
 using App.Models;
 using App.Services.Models;
+using App.Services.Models.Comment;
 using App.Services.Models.Home;
 using App.Services.Models.Recipe;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +66,6 @@ namespace App.Services.DataServices
                 },
                 Author = input.Author,
                 SmallPictureUrl = input.ImageUrl,
-                MenuType = input.MenuType,
                 Name = input.Name,
                 Ingredients = ingredients,
                 Directions = new Directions
@@ -104,14 +104,15 @@ namespace App.Services.DataServices
 
             if (recipe != null)
             {
+                details.RecipeId = recipe.Id;
                 details.Author = recipe.Author;
                 details.CategoryName = recipe.Category.Name;
                 details.Directions = recipe.Directions;
                 details.Ingredients = recipe.Ingredients;
-                details.MenuType = recipe.MenuType;
                 details.Name = recipe.Name;
                 details.Nutrition = recipe.Nutrition;
                 details.SmallPictureUrl = recipe.SmallPictureUrl;
+                details.Comments = recipe.Comments;
             }
 
             return details;
@@ -126,6 +127,25 @@ namespace App.Services.DataServices
                             .ToList();
 
             return recipies;
+        }
+
+        public void AddComment(CreateCommentViewModel comment)
+        {
+            var recipe = _repositoryRecipe.All().Where(r => r.Id == comment.RecipeId).FirstOrDefault();
+
+            if (recipe != null)
+            {
+                var com = new Comment
+                {
+                    Content = comment.Content,
+                    Recipe = recipe,
+                    Date = comment.Date
+                };
+                recipe.Comments.Add(com);
+
+            }
+
+           _repositoryRecipe.SafeChanges();
         }
     }
 }

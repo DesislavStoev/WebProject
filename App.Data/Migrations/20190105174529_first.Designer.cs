@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Data.Migrations
 {
     [DbContext(typeof(AppRContext))]
-    [Migration("20181230224120_someModel1")]
-    partial class someModel1
+    [Migration("20190105174529_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,13 +27,28 @@ namespace App.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Info");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<int?>("RecipeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("App.Models.Directions", b =>
@@ -119,8 +134,6 @@ namespace App.Data.Migrations
 
                     b.Property<int>("DirectionsId");
 
-                    b.Property<int>("MenuType");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("NutritionId");
@@ -133,7 +146,8 @@ namespace App.Data.Migrations
 
                     b.HasIndex("DirectionsId");
 
-                    b.HasIndex("NutritionId");
+                    b.HasIndex("NutritionId")
+                        .IsUnique();
 
                     b.ToTable("Recipes");
                 });
@@ -299,6 +313,13 @@ namespace App.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.HasOne("App.Models.Recipe", "Recipe")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecipeId");
+                });
+
             modelBuilder.Entity("App.Models.Ingredient", b =>
                 {
                     b.HasOne("App.Models.Recipe", "Recipe")
@@ -319,8 +340,8 @@ namespace App.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("App.Models.Nutrition", "Nutrition")
-                        .WithMany()
-                        .HasForeignKey("NutritionId")
+                        .WithOne("Recipe")
+                        .HasForeignKey("App.Models.Recipe", "NutritionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

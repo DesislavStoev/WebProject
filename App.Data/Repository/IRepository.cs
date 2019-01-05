@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace App.Data
@@ -16,5 +13,7 @@ namespace App.Data
         void Delete(TEntity entity);
 
         Task<int> SafeChangesAsync();
+
+        int SafeChanges();
     }
 }

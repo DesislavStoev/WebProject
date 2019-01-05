@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using App.Services.DataServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +24,6 @@ namespace App.Web.Controllers
         public IActionResult Details(int id)
         {
             var recipiesInCategory = _recipeService.GetAllRecipiesByCategory(id);
-
             return View(recipiesInCategory);
         }
     }

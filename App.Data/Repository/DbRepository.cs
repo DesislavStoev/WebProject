@@ -41,5 +41,10 @@ namespace App.Data
         {
            return _context.SaveChangesAsync();
         }
+
+        public int SafeChanges()
+        {
+            return _context.SaveChanges();
+        }
     }
 }

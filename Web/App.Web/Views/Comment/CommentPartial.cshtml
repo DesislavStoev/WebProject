@@ -1,20 +1,27 @@
-﻿
-@{
-    ViewData["Title"] = "CommentPartial";
-}
+﻿@using Microsoft.AspNetCore.Identity
+@using App.Web.Areas.Identity.Data
 
-<h2>CommentPartial</h2>
+@model IEnumerable<App.Models.Comment>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger">
-                <div class="form-group">
-                    @*<label asp-for="Comment" class="control-label">Име</label>
-                        <input asp-for="Comment" class="form-control" />
-                        <span asp-validation-for="Commnent" class="text-danger"></span>*@
+@inject UserManager<AppUser> UserManager
+
+<div class="container">
+    <div class="row">
+        @foreach (var comment in Model)
+        {
+            <div class="col-sm-8">
+                <div class="panel panel-white post panel-shadow">
+                    <div class="post-heading">
+                        <div class="pull-left meta">
+                            <div class="title h5">@UserManager.GetUserName(User)</div>
+                            <h6 class="text-muted time">Date</h6>
+                        </div>
+                    </div>
+                    <div class="post-description">
+                        @comment.Content
+                    </div>
                 </div>
             </div>
-        </form>
+        }
     </div>
 </div>

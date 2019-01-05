@@ -12,9 +12,9 @@ using System.Collections.Generic;
 
 namespace App.Sandbox
 {
-    class Program
+    public class Sandbox
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             Console.WriteLine("Start seeding ...");
 
@@ -32,7 +32,7 @@ namespace App.Sandbox
             }
         }
 
-        private static void SandboxCode(IServiceProvider serviceProvider)
+        public static void SandboxCode(IServiceProvider serviceProvider)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -40,7 +40,7 @@ namespace App.Sandbox
             var web = new HtmlWeb { OverrideEncoding = Encoding.GetEncoding("windows-1251") };
             var doc = web.Load(siteUrl);
 
-            var categories = doc.DocumentNode.SelectNodes(".//div[@id='cont_recipe_browse_big']//div");
+            var categories = doc.DocumentNode.SelectNodes(".//div[@id='cont_recipe_browse_big']//div").Take(7);
             foreach (var category in categories)
             {
                 var categoryName = category.InnerText.Trim();
@@ -50,9 +50,9 @@ namespace App.Sandbox
                 try
                 {
                     var doc1 = web.Load(url);
-                    var recipes = doc1.DocumentNode.SelectNodes(@".//table[@class='rec search_results']"); //(@".//td[@class='td1']//a");
+                    var recipes = doc1.DocumentNode.SelectNodes(@".//table[@class='rec search_results']");
 
-                    for (int i = 0; i < 11; i++)
+                    for (int i = 0; i < 5; i++)
                     {
                         var recipeUrl = recipes[i].SelectSingleNode(@".//td[@class='td1']//a");
                         var recipeSmallPicture = recipes[i].SelectSingleNode(@".//img[@class='pic']")?.Attributes["src"]?.Value;
@@ -71,15 +71,15 @@ namespace App.Sandbox
                         {
                             var amount = ingredient.SelectSingleNode(@".//span[@property='v:amount']").InnerText.Trim();
                             var name = ingredient.SelectSingleNode(@".//a[@property='v:name']").InnerText.Trim();
-                            var ingrDb = db.Ingredients.Where(x => x.Name == name).FirstOrDefault();
+                            var ingrDb = db.Ingredients.Where(x => x.Name == name && x.Quantity == amount).FirstOrDefault();
                             if (ingrDb == null)
                             {
                                 ingrDb = new Ingredient
                                 {
                                     Name = name,
+                                    Quantity = amount
                                 };
                             }
-                            ingrDb.Quantity = amount;
                             ingredietList.Add(ingrDb);
                         }
 
@@ -122,9 +122,10 @@ namespace App.Sandbox
                                 CookTime = cookTime,
                                 Method = content,
                                 Serves = 4,
+                                PrepTime = "10",
+                                CookSkill = 1
                             },
                             Author = "Uncknown",
-                            MenuType = Models.Enums.MenuType.Other,
                             BigPictureUrl = recipeBigPicUrl,
                             SmallPictureUrl = recipeSmallPicUrl,
                             Ingredients = ingredietList,

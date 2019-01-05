@@ -26,14 +26,13 @@
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
             <a asp-area="" asp-controller="Home" asp-action="Index">Начална страница</a>
+            <a asp-area="" asp-controller="Category" asp-action="Index">Категории</a>
             @if (this.User.Identity.IsAuthenticated)
             {
                 <a asp-area="" asp-controller="Recipe" asp-action="Create">Създай</a>
             }
             <a asp-area="" asp-controller="Home" asp-action="About">За нас</a>
             <a asp-area="" asp-controller="Home" asp-action="Contact">Контакти</a>
-            <a asp-area="" asp-controller="Category" asp-action="Index">Рецепти</a>
-
 
             @if (SignInManager.IsSignedIn(User))
             {

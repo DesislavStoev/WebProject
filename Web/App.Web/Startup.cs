@@ -66,7 +66,6 @@ namespace App.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using App.Services.Models;
+using App.Services.Models.Comment;
 using App.Services.Models.Home;
 using App.Services.Models.Recipe;
 using Microsoft.AspNetCore.Http;
@@ -18,5 +19,7 @@ namespace App.Services.DataServices
         bool IsCategoryExist(int categoryId);
 
         IEnumerable<IdAndNameViewModel> GetAllRecipiesByCategory(int categoryId);
+
+        void AddComment(CreateCommentViewModel comment);
     }
 }

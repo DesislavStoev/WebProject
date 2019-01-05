@@ -1,7 +1,4 @@
-﻿using App.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace App.Models
 {
@@ -9,7 +6,7 @@ namespace App.Models
     {
         public string Name { get; set; }
 
-        public MenuType MenuType { get; set; }
+      //  public MenuType MenuType { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }
 
@@ -30,5 +27,7 @@ namespace App.Models
         public string SmallPictureUrl { get; set; }
 
         public string BigPictureUrl { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

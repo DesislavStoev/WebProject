@@ -25,13 +25,30 @@ namespace App.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Info");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int?>("RecipeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("App.Models.Directions", b =>
@@ -116,8 +133,6 @@ namespace App.Data.Migrations
                     b.Property<int>("CategoryId");
 
                     b.Property<int>("DirectionsId");
-
-                    b.Property<int>("MenuType");
 
                     b.Property<string>("Name");
 
@@ -296,6 +311,13 @@ namespace App.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("App.Models.Comment", b =>
+                {
+                    b.HasOne("App.Models.Recipe", "Recipe")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("App.Models.Ingredient", b =>

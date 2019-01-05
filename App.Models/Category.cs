@@ -9,7 +9,5 @@ namespace App.Models
         public string Name { get; set; }
 
         public virtual ICollection<Recipe> Recipes { get; set; }
-
-        public string Info { get; set; }
     }
 }
